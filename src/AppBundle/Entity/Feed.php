@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Util\Inflector;
 
 /**
  * Feed
@@ -12,6 +13,42 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Feed
 {
+    public function __construct() {
+        $this->setCreated(new \DateTime());
+    }
+
+    /**
+     * Ugly implementation of doctrine hydration, as I am unable to make
+     * native hydration to work for Feed entity.
+     *
+     * @param $feed2 - Feed to hydration from
+     * @return $this
+     */
+    public function hydrate($feed2) {
+        if (isset($feed2->title)) { $this->title = (string) $feed2->title; }
+        if (isset($feed2->body)) { $this->body = (string) $feed2->body; }
+        if (isset($feed2->image)) { $this->image = (string) $feed2->image; }
+        if (isset($feed2->source)) { $this->source = (string) $feed2->source; }
+        return $this;
+    }
+
+    public function toArray() {
+        $result = [
+            'title' => '',
+            'body' => '',
+            'image' => '',
+            'source' => '',
+            'publisher' => $this->publisher
+        ];
+
+        if (isset($this->title)) { $result['title'] = (string) $this->title; }
+        if (isset($this->body)) { $result['body'] = (string) $this->body; }
+        if (isset($this->image)) { $result['image'] = (string) $this->image; }
+        if (isset($this->source)) { $result['source'] = (string) $this->source; }
+
+        return $result;
+    }
+
     /**
      * @var int
      *
@@ -55,6 +92,13 @@ class Feed
      * @ORM\Column(name="publisher", type="string", length=255, nullable=true)
      */
     private $publisher;
+
+    /**
+     * @var date
+     *
+     * @ORM\Column(name="created", type="date")
+     */
+    private $created;
 
 
     /**
@@ -185,6 +229,30 @@ class Feed
     public function getPublisher()
     {
         return $this->publisher;
+    }
+
+    /**
+     * Set created
+     *
+     * @param date $created
+     *
+     * @return Feed
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    /**
+     * Get created
+     *
+     * @return date
+     */
+    public function getCreated()
+    {
+        return $this->created;
     }
 }
 
