@@ -29,12 +29,27 @@ class AppScrapCommand extends ContainerAwareCommand
         $scraper = new Scraper();
         $feed = $scraper->read($publisherCode);
 
+        // Prepare persistence
+        $doctrine = $this->getContainer()->get('doctrine');
+        $repository = $doctrine->getRepository('AppBundle:Feed');
+        $em = $doctrine->getManager();
+
+        // Find existing Feed
+        $previousFeed = $repository->findOneBy([
+            'title' => (string) $feed->getTitle(),
+            'created' => new \DateTime(),
+            'publisher' => $publisherCode
+        ]);
+        if (!is_null($previousFeed)) {
+            $previousFeed->hydrate($feed);
+            $feed = $previousFeed;
+        }
+
         // Persist
-        $em = $this->getContainer()->get('doctrine')->getManager();
         $em->persist($feed);
         $em->flush($feed);
 
-        $output->writeln('Command result. '. $publisherCode);
+        $output->writeln('Success creating feed with id ' . $feed->getId());
     }
 
 }
