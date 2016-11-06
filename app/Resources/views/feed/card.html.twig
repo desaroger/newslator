@@ -1,0 +1,14 @@
+<div class="card medium">
+    <div class="card-image">
+        {% if image|default(0) %}
+            <img src="{{ image }}">
+        {% endif %}
+        <span class="card-title">{{ title|default('untitled') }}</span>
+    </div>
+    <div class="card-content">
+        {{ body }}
+    </div>
+    <div class="card-action">
+        <a href="{{ source }}" target="_blank">Read</a>
+    </div>
+</div>

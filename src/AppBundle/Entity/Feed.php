@@ -32,6 +32,23 @@ class Feed
         return $this;
     }
 
+    public function toArray() {
+        $result = [
+            'title' => '',
+            'body' => '',
+            'image' => '',
+            'source' => '',
+            'publisher' => $this->publisher
+        ];
+
+        if (isset($this->title)) { $result['title'] = (string) $this->title; }
+        if (isset($this->body)) { $result['body'] = (string) $this->body; }
+        if (isset($this->image)) { $result['image'] = (string) $this->image; }
+        if (isset($this->source)) { $result['source'] = (string) $this->source; }
+
+        return $result;
+    }
+
     /**
      * @var int
      *

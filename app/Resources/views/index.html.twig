@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="row">
+        {% for entry in entries %}
+
+            <div class="col s12 m6">
+                <h2>{{ entry.publisherName }}</h2>
+                {% include 'feed/card.html.twig' with entry %}
+            </div>
+
+        {% endfor %}
+    </div>
+
+
+
+
+
+{% endblock %}
