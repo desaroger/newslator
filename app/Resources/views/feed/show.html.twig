@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Feed</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ feed.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ feed.title }}</td>
+            </tr>
+            <tr>
+                <th>Body</th>
+                <td>{{ feed.body }}</td>
+            </tr>
+            <tr>
+                <th>Image</th>
+                <td>{{ feed.image }}</td>
+            </tr>
+            <tr>
+                <th>Source</th>
+                <td>{{ feed.source }}</td>
+            </tr>
+            <tr>
+                <th>Publisher</th>
+                <td>{{ feed.publisher }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('feed_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('feed_edit', { 'id': feed.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}
