@@ -1,0 +1,215 @@
+<rss xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+    <channel>
+        <title>
+            <![CDATA[ Portada de EL PAÍS ]]>
+        </title>
+        <link>
+            <![CDATA[ http://elpais.com/rss/elpais/portada.xml ]]>
+        </link>
+        <description>
+            <![CDATA[ Portada de EL PAÍS ]]>
+        </description>
+        <lastBuildDate>Sun, 6 Nov 2016 17:37:36 +0100</lastBuildDate>
+        <pubDate>Sun, 6 Nov 2016 17:37:36 +0100</pubDate>
+        <language>es</language>
+        <copyright>
+            <![CDATA[ Copyright 2016, Ediciones EL PAÍS ]]>
+        </copyright>
+        <ttl>5</ttl>
+        <image>
+            <url>
+                http://ep00.epimg.net/iconos/v1.x/v1.0/logos/cabecera_portada.png
+            </url>
+            <title>Logotipo de EL PAÍS</title>
+            <link>http://elpais.com/</link>
+        </image>
+        <item>
+            <title>
+                <![CDATA[
+El ‘efecto Trump’: una inusual volatilidad electoral llega a Wall Street
+]]>
+            </title>
+            <link>
+                <![CDATA[
+http://elpais.com/economia/2016/11/04/actualidad/1478275261_888155.html#?ref=rss&format=simple&link=link
+]]>
+            </link>
+            <guid isPermaLink="true">
+                <![CDATA[
+http://elpais.com/economia/2016/11/04/actualidad/1478275261_888155.html#?ref=rss&format=simple&link=guid
+]]>
+            </guid>
+            <dc:creator>
+                <![CDATA[ Sandro Pozzi ]]>
+            </dc:creator>
+            <description>
+                <![CDATA[
+Wall Street vivió la semana previa al voto una negatividad que solo se vio con Nixon y Bush padre en las 23 elecciones celebradas desde 1928
+]]>
+            </description>
+            <pubDate>
+                <![CDATA[ Sun, 6 Nov 2016 16:47:39 +0100 ]]>
+            </pubDate>
+            <category>
+                <![CDATA[ Donald Trump ]]>
+            </category>
+            <category>
+                <![CDATA[ Hillary Clinton ]]>
+            </category>
+            <category>
+                <![CDATA[ Wall Street ]]>
+            </category>
+            <category>
+                <![CDATA[ S&P 500 ]]>
+            </category>
+            <category>
+                <![CDATA[ Índices bursátiles ]]>
+            </category>
+            <category>
+                <![CDATA[ Elecciones EEUU 2016 ]]>
+            </category>
+            <category>
+                <![CDATA[ Elecciones EE UU ]]>
+            </category>
+            <category>
+                <![CDATA[ Bolsa ]]>
+            </category>
+            <category>
+                <![CDATA[ Elecciones presidenciales ]]>
+            </category>
+            <category>
+                <![CDATA[ Elecciones ]]>
+            </category>
+            <category>
+                <![CDATA[ Mercados financieros ]]>
+            </category>
+            <category>
+                <![CDATA[ Política ]]>
+            </category>
+            <category>
+                <![CDATA[ Finanzas ]]>
+            </category>
+            <content:encoded>
+                <![CDATA[
+<p>La norma de las últimas nueve décadas dice que los mercados encaran la recta final de las elecciones en positivo. No en esta ocasión. El índice S&P 500 arrastra una caída del 3% desde el martes de la semana pasada, cuando empezaron las ventas. Este jueves ya cerró la sesión marcando la peor secuencia desde octubre de 2008, en plena hecatombe financiera, y la remató el viernes con la racha más larga en 36 años.</p><p><a href="http://elpais.com/economia/2016/11/04/actualidad/1478275261_888155.html#?ref=rss&format=simple&link=seguir">Seguir leyendo</a>.</p>
+]]>
+            </content:encoded>
+            <enclosure url="http://ep00.epimg.net/economia/imagenes/2016/11/04/actualidad/1478275261_888155_1478291984_miniatura_normal.jpg" length="32467" type="image/jpeg"/>
+            <enclosure url="http://ep00.epimg.net/economia/imagenes/2016/11/04/actualidad/1478275261_888155_1478347344_noticia_normal.jpg" length="69374" type="image/jpeg"/>
+            <comments>
+                <![CDATA[
+http://eskup.elpais.com/C1478275261-c183c4118f6b243fefd6054bde1419cf
+]]>
+            </comments>
+        </item>
+        <item>
+            <title>
+                <![CDATA[ La guerra civil americana II ]]>
+            </title>
+            <link>
+                <![CDATA[
+http://elpais.com/internacional/2016/11/05/actualidad/1478370686_326456.html#?ref=rss&format=simple&link=link
+]]>
+            </link>
+            <guid isPermaLink="true">
+                <![CDATA[
+http://elpais.com/internacional/2016/11/05/actualidad/1478370686_326456.html#?ref=rss&format=simple&link=guid
+]]>
+            </guid>
+            <dc:creator>
+                <![CDATA[ John Carlin ]]>
+            </dc:creator>
+            <description>
+                <![CDATA[
+Cabe sospechar que la historia interpretará el fenómeno Trump como la expresión de impulsos racistas similares a los que motivaron a la Confederación de los Estados del sur
+]]>
+            </description>
+            <pubDate>
+                <![CDATA[ Sat, 5 Nov 2016 19:59:50 +0100 ]]>
+            </pubDate>
+            <category>
+                <![CDATA[ Elecciones EEUU 2016 ]]>
+            </category>
+            <category>
+                <![CDATA[ Elecciones EE UU ]]>
+            </category>
+            <category>
+                <![CDATA[ Elecciones presidenciales ]]>
+            </category>
+            <category>
+                <![CDATA[ Elecciones ]]>
+            </category>
+            <category>
+                <![CDATA[ Política ]]>
+            </category>
+            <content:encoded>
+                <![CDATA[
+<p>Me comentó un amigo residente en Boston, Massachusetts, que la <a href="http://cultura.elpais.com/cultura/2016/04/03/actualidad/1459650278_430820.html">guerra civil</a> librada en los Estados no tan Unidos entre 1861 y 1865 ofrecía un espejo de la locura en la que se ha convertido la contienda electoral presidencial de su país en 2016.</p><p><a href="http://elpais.com/internacional/2016/11/05/actualidad/1478370686_326456.html#?ref=rss&format=simple&link=seguir">Seguir leyendo</a>.</p>
+]]>
+            </content:encoded>
+            <enclosure url="http://ep00.epimg.net/internacional/imagenes/2016/11/05/actualidad/1478370686_326456_1478370847_miniatura_normal.jpg" length="12540" type="image/jpeg"/>
+            <enclosure url="http://ep00.epimg.net/internacional/imagenes/2016/11/05/actualidad/1478370686_326456_1478370847_noticia_normal.jpg" length="41720" type="image/jpeg"/>
+            <enclosure url="http://ep00.epimg.net/internacional/imagenes/2016/11/05/actualidad/1478370686_326456_1478370847_noticia_grande.jpg" length="41720" type="image/jpeg"/>
+            <comments>
+                <![CDATA[
+http://eskup.elpais.com/C1478370686-2de6f9cece1b34fa7f08518eec555801
+]]>
+            </comments>
+        </item>
+        <item>
+            <title>
+                <![CDATA[
+Las grandes entidades no subirán más las tarifas de los cajeros en 2017
+]]>
+            </title>
+            <link>
+                <![CDATA[
+http://elpais.com/economia/2016/11/04/actualidad/1478297215_062761.html#?ref=rss&format=simple&link=link
+]]>
+            </link>
+            <guid isPermaLink="true">
+                <![CDATA[
+http://elpais.com/economia/2016/11/04/actualidad/1478297215_062761.html#?ref=rss&format=simple&link=guid
+]]>
+            </guid>
+            <dc:creator>
+                <![CDATA[ Íñigo de Barrón ]]>
+            </dc:creator>
+            <description>
+                <![CDATA[
+Afirman que asumirán la nueva tasa del Ayuntamiento de Madrid sin elevar el coste directo al cliente
+]]>
+            </description>
+            <pubDate>
+                <![CDATA[ Sun, 6 Nov 2016 14:53:24 +0100 ]]>
+            </pubDate>
+            <category>
+                <![CDATA[ Comisiones bancarias ]]>
+            </category>
+            <category>
+                <![CDATA[ Bancos ]]>
+            </category>
+            <category>
+                <![CDATA[ Servicios bancarios ]]>
+            </category>
+            <category>
+                <![CDATA[ Banca ]]>
+            </category>
+            <category>
+                <![CDATA[ Finanzas ]]>
+            </category>
+            <content:encoded>
+                <![CDATA[
+<p>Hace semanas, las tarifas de los cajeros volvieron al debate público por el anuncio del Ayuntamiento de Madrid de que <a href="http://ccaa.elpais.com/ccaa/2016/10/13/madrid/1476358994_329968.html">cobrará una tasa a los bancos que tengan las máquinas a pie de calle</a>. Los principales directivos bancarios no han ocultado su malestar por la nueva tasa. Según la Asociación Española de Banca (AEB), en el seno de la patronal se está analizando la posibilidad de recurrir esta iniciativa del Ayuntamiento de Manuela Carmena, aunque por el momento no se ha tomado ninguna decisión.</p><p><a href="http://elpais.com/economia/2016/11/04/actualidad/1478297215_062761.html#?ref=rss&format=simple&link=seguir">Seguir leyendo</a>.</p>
+]]>
+            </content:encoded>
+            <enclosure url="http://ep00.epimg.net/economia/imagenes/2016/11/04/actualidad/1478297215_062761_1478357121_miniatura_normal.jpg" length="18146" type="image/jpeg"/>
+            <enclosure url="http://ep00.epimg.net/economia/imagenes/2016/11/04/actualidad/1478297215_062761_1478357121_noticia_normal.jpg" length="52440" type="image/jpeg"/>
+            <comments>
+                <![CDATA[
+http://eskup.elpais.com/C1478297215-008bcabf6136a30cf5c23a86dd159b78
+]]>
+            </comments>
+        </item>
+    </channel>
+</rss>
