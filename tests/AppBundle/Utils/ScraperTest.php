@@ -1,18 +1,32 @@
 <?php
 
 namespace Tests\AppBundle\Utils;
-use AppBundle\Utils\Scraper;
 
-class ScraperTest extends \PHPUnit_Framework_TestCase
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+
+class ScraperTest extends KernelTestCase
 {
+    private $container;
+    private $em;
+
+
+    protected function setUp()
+    {
+        self::bootKernel();
+
+        $this->container = static::$kernel->getContainer();
+        $this->em = $this->container
+            ->get('doctrine')
+            ->getManager();
+    }
 
     /**
      * Tests the Read method, the public method of our scraper, the only method
      * that should be called from outside. (see the to-do from Scraper.php)
      */
     public function testRead() {
-        Scraper::$publishers['elpais']['rss'] = dirname(__FILE__).'/example.xml';
-        $scraper = new Scraper();
+        $scraper = $this->container->get('app.scraper');
+        $scraper->publishers['elpais']['rss'] = dirname(__FILE__).'/example.xml';
         $feed = $scraper->read('elpais');
 
         $this->assertEquals('El ‘efecto Trump’: una inusual volatilidad electoral llega a Wall Street', $feed->getTitle());
@@ -24,13 +38,9 @@ class ScraperTest extends \PHPUnit_Framework_TestCase
      * call on a unit test.
      */
     public function testReadRssMock() {
-        Scraper::$publishers['mockNews'] = [
-            'code' => 'mockNews',
-            'url' => 'http://mockNews.com/',
-            'rss' => dirname(__FILE__).'/example.xml'
-        ];
-        $scraper = new Scraper();
-        $content = $scraper->readRss('mockNews');
+        $scraper = $this->container->get('app.scraper');
+        $scraper->publishers['elpais']['rss'] = dirname(__FILE__).'/example.xml';
+        $content = $scraper->readRss('elpais');
 
         $this->checkTitle($content, 'Portada de EL PAÍS');
     }
@@ -40,7 +50,7 @@ class ScraperTest extends \PHPUnit_Framework_TestCase
      */
     public function testReadRssException()
     {
-        $scraper = new Scraper();
+        $scraper = $this->container->get('app.scraper');
         $scraper->readRss('ElMundoToday');
     }
 
@@ -53,7 +63,7 @@ class ScraperTest extends \PHPUnit_Framework_TestCase
         $xml = file_get_contents('example.xml', FILE_USE_INCLUDE_PATH);
 
         // Scrap it
-        $scraper = new Scraper();
+        $scraper = $this->container->get('app.scraper');
         $result = $scraper->readXML($xml);
 
         $this->checkTitle($result, 'Portada de EL PAÍS');

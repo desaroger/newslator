@@ -4,6 +4,9 @@ parameters:
 #    parameter_name: value
 
 services:
+    app.scraper:
+      class: AppBundle\Utils\Scraper
+      arguments: ['@doctrine.orm.entity_manager', '@service_container']
     templating.engine.pug:
         class: Pug\PugSymfonyEngine
         arguments: ["@kernel"]
