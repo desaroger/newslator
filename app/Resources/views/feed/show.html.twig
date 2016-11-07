@@ -4,7 +4,7 @@
     <h2>Feed</h2>
 
     {# Feed data #}
-    <table style="width: 100%">
+    <table>
         <tbody>
         <tr>
             <th>Id</th>
@@ -32,10 +32,9 @@
         </tr>
         </tbody>
     </table>
-
     <br>
 
-    {# Buttons left #}
+    {# Buttons left (backToList) #}
     <div class="left">
         <a href="{{ path('feed_index') }}" class="btn-flat waves-effect waves-light">
             <i class="material-icons left">undo</i>
@@ -43,7 +42,7 @@
         </a>
     </div>
 
-    {# Buttons right #}
+    {# Buttons right (delete, edit) #}
     <div class="right">
         {{ form_start(delete_form) }}
             <a class="waves-effect waves-teal btn-flat">
@@ -53,9 +52,5 @@
             <a href="{{ path('feed_edit', { 'id': feed.id }) }}" class="waves-effect waves-teal btn">Edit</a>
         {{ form_end(delete_form) }}
     </div>
-
-{% endblock %}
-
-{% block actions %}
 
 {% endblock %}

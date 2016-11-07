@@ -1,30 +1,19 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Feed creation</h1>
+    <h2>Feed creation</h2>
 
     {{ form_start(form) }}
         {{ form_widget(form) }}
 
-        {# Big save button #}
-        <div class="fixed-action-btn">
-            <a type="submit" class="btn-floating btn-large waves-effect waves-circle waves-light green">
+        {# Button right (cancel, save) #}
+        <div class="right">
+            <a href="{{ path('feed_index') }}" class="waves-effect waves-teal btn-flat">Cancel</a>
+            <button class="btn waves-effect waves-light" type="submit" name="action">Save
                 <input type="submit" value="" class="hide-hack"/>
-                <i class="large material-icons ">done</i>
-            </a>
+            </button>
         </div>
 
     {{ form_end(form) }}
 
-    <ul>
-        <li>
-            <a href="{{ path('feed_index') }}">Back to the list</a>
-        </li>
-    </ul>
-{% endblock %}
-
-{% block stylesheets %}
-    <style>
-
-    </style>
 {% endblock %}

@@ -17,34 +17,43 @@
             </tr>
         </thead>
         <tbody>
-        {% for feed in feeds %}
-            <tr>
-                <td><a href="{{ path('feed_show', { 'id': feed.id }) }}">{{ feed.id }}</a></td>
-                <td>
-                    {% if feed.image %}
-                        <img src="{{ feed.image }}" alt="" height=100 class="materialboxed" data-caption="{{ feed.title }}">
-                    {% endif %}
-                </td>
-                <td>{{ feed.title }}</td>
-                <td class="hide-on-med-and-down">{{ feed.body }}</td>
-                <td><a href="{{ feed.source }}" target="_blank">Read</a></td>
-                <td>{{ feed.publisher | publisherName }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('feed_show', { 'id': feed.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('feed_edit', { 'id': feed.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
+            {% for feed in feeds %}
+                <tr>
+                    {# id #}
+                    <td><a href="{{ path('feed_show', { 'id': feed.id }) }}">{{ feed.id }}</a></td>
+
+                    {# Image #}
+                    <td>
+                        {% if feed.image %}
+                            <img src="{{ feed.image }}" alt="" height=100 class="materialboxed" data-caption="{{ feed.title }}">
+                        {% endif %}
+                    </td>
+
+                    {# Title #}
+                    <td>{{ feed.title }}</td>
+
+                    {# Body (hidden on mobile) #}
+                    <td class="hide-on-med-and-down">{{ feed.body }}</td>
+
+                    {# Source #}
+                    <td><a href="{{ feed.source }}" target="_blank">Read</a></td>
+
+                    {# Publisher #}
+                    <td>{{ feed.publisher | publisherName }}</td>
+
+                    {# Actions #}
+                    <td>
+                        <ul>
+                            <li><a href="{{ path('feed_show', { 'id': feed.id }) }}">show</a></li>
+                            <li><a href="{{ path('feed_edit', { 'id': feed.id }) }}">edit</a></li>
+                        </ul>
+                    </td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 
-    {# Big add button #}
+    {# FAB add #}
     <div class="fixed-action-btn">
         <a href="{{ path('feed_new') }}" class="btn-floating btn-large waves-effect waves-circle waves-light red">
             <i class="large material-icons ">add</i>
