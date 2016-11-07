@@ -11,7 +11,6 @@
 
         {# Global styles #}
         <style>
-
             /* Submit button hack */
             input.hide-hack {
                 position: absolute;
@@ -19,8 +18,6 @@
                 height: 100%;
                 opacity: 0;
             }
-
-
         </style>
     </head>
     <body>
@@ -49,11 +46,21 @@
         {% block javascripts %}{% endblock %}
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
-
         <script>
             $(document).ready(function(){
+
+                // Image amplification
                 $('.materialboxed').materialbox();
+
+                // Navbar link activation
+                var currentPath = window.location.pathname;
+                $.each($('nav').find('li'), function() {
+                    var link = $(this).find('a').attr('href');
+                    $(this).toggleClass('active', link == currentPath);
+                });
             });
+
+
         </script>
 
     </body>
