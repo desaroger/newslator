@@ -10,24 +10,65 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component
 /**
  * Feed controller.
  *
- * @Route("feed")
+ * @Route("feeds")
  */
 class FeedController extends Controller
 {
     /**
-     * Lists all feed entities.
+     * Lists first page feed entities.
+     *
      *
      * @Route("/", name="feed_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+//        $em = $this->getDoctrine()->getManager();
+//
+//        $feeds = $em->getRepository('AppBundle:Feed')->findAll();
 
-        $feeds = $em->getRepository('AppBundle:Feed')->findAll();
+        $em = $this->getDoctrine()->getManager();
+        $dql   = "SELECT f FROM AppBundle:Feed f";
+        $query = $em->createQuery($dql);
+
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            1 /*page number*/,
+            5 /*limit per page*/
+        );
 
         return $this->render('feed/index.html.twig', array(
-            'feeds' => $feeds,
+            'feeds' => $pagination,
+        ));
+    }
+
+    /**
+     * Lists all feed entities.
+     *
+     *
+     * @Route("/page/{page}", name="feed_paginated", requirements={"page": "\d+"}), defaults={"page": 1}
+     * @Method("GET")
+     */
+    public function indexPaginatedAction(Request $request, $page = 1)
+    {
+//        $em = $this->getDoctrine()->getManager();
+//
+//        $feeds = $em->getRepository('AppBundle:Feed')->findAll();
+
+        $em = $this->getDoctrine()->getManager();
+        $dql   = "SELECT f FROM AppBundle:Feed f";
+        $query = $em->createQuery($dql);
+
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $page /*page number*/,
+            5 /*limit per page*/
+        );
+
+        return $this->render('feed/index.html.twig', array(
+            'feeds' => $pagination,
         ));
     }
 
