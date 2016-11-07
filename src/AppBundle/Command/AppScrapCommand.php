@@ -8,8 +8,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use AppBundle\Utils\Scraper;
-
 class AppScrapCommand extends ContainerAwareCommand
 {
     protected function configure()
@@ -17,7 +15,7 @@ class AppScrapCommand extends ContainerAwareCommand
         $this
             ->setName('app:scraper')
             ->setDescription('Run the scraping service.')
-            ->addArgument('publisherCode', InputArgument::REQUIRED, 'The code of the publisher you want to scrap.')
+            ->addArgument('publisherCode', InputArgument::OPTIONAL, 'The code of the publisher you want to scrap.')
             ->setHelp('This command allows you to scrap a publisher and create the Feed entity persisted to DB.')
         ;
     }
@@ -26,30 +24,18 @@ class AppScrapCommand extends ContainerAwareCommand
     {
         $publisherCode = $input->getArgument('publisherCode');
 
-        $scraper = new Scraper();
-        $feed = $scraper->read($publisherCode);
+        $scraper = $this->getContainer()->get('app.scraper');
 
-        // Prepare persistence
-        $doctrine = $this->getContainer()->get('doctrine');
-        $repository = $doctrine->getRepository('AppBundle:Feed');
-        $em = $doctrine->getManager();
+        $feeds = $scraper->readAndPersist($publisherCode);
 
-        // Find existing Feed
-        $previousFeed = $repository->findOneBy([
-            'title' => (string) $feed->getTitle(),
-            'created' => new \DateTime(),
-            'publisher' => $publisherCode
-        ]);
-        if (!is_null($previousFeed)) {
-            $previousFeed->hydrate($feed);
-            $feed = $previousFeed;
+        $output->writeln('Success scraping:');
+        foreach ($feeds as $feed) {
+            $output->writeln("[id " . $feed->getId() . " "
+                . ($feed->_createdNow ? 'created' : 'updated') . "] "
+                . $feed->getPublisher() . "  -  " . $feed->getTitle());
         }
 
-        // Persist
-        $em->persist($feed);
-        $em->flush($feed);
 
-        $output->writeln('Success creating feed with id ' . $feed->getId());
     }
 
 }

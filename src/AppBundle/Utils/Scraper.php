@@ -8,6 +8,8 @@
 
 namespace AppBundle\Utils;
 
+use Doctrine\ORM\EntityManager;
+use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 use AppBundle\Entity\Feed;
 
 class Scraper
@@ -20,6 +22,12 @@ class Scraper
      *  httpCall -> SimpleXML -> Feed
      */
 
+    public function __construct(EntityManager $em, Container $container)
+    {
+        $this->em = $em;
+        $this->container = $container;
+    }
+
 
     /**
      * It stores the valid publishers. Perhaps in the future this might be
@@ -28,7 +36,7 @@ class Scraper
      *
      * @var array
      */
-    public static $publishers = [
+    public $publishers = [
         'elpais' => [
             'code' => 'elpais',
             'url' => 'http://elpais.com/',
@@ -69,6 +77,55 @@ class Scraper
 
         // Get Feed object
         $feed = $this->parseToFeed($xml, $publisherCode);
+
+        return $feed;
+    }
+
+    public function readAndPersist($publisherCode) {
+
+        // Determine if scrap one or all the publishers
+        $publishers = [];
+        if ($publisherCode) {
+            $publishers[$publisherCode] = [];
+        } else {
+            $publishers = $this->publishers;
+        }
+
+        $feeds = [];
+        foreach ($publishers as $code => $publisher) {
+            $feeds[] = $this->readAndPersistOne($code);
+        }
+
+        return $feeds;
+    }
+
+    public function readAndPersistOne($publisherCode) {
+
+        $isCreation = true;
+        $feed = $this->read($publisherCode);
+
+        // Prepare persistence
+        $doctrine = $this->container->get('doctrine');
+        $repository = $doctrine->getRepository('AppBundle:Feed');
+        $em = $doctrine->getManager();
+
+        // Find existing Feed
+        $previousFeed = $repository->findOneBy([
+            'title' => (string) $feed->getTitle(),
+            'created' => new \DateTime(),
+            'publisher' => $publisherCode
+        ]);
+        if (!is_null($previousFeed)) {
+            $isCreation = false;
+            $previousFeed->hydrate($feed);
+            $feed = $previousFeed;
+        }
+
+        // Persist
+        $em->persist($feed);
+        $em->flush($feed);
+
+        $feed->_createdNow = $isCreation;
 
         return $feed;
     }
@@ -116,11 +173,11 @@ class Scraper
 
         } else if ($publisherCode == 'elconfidencial') {
 
-            $entry = $content->xpath('entry')[0];
-            $feedArray['title'] = $entry->xpath('title')[0];
-            $feedArray['body'] = $entry->xpath('summary')[0];
-            $feedArray['image'] = $entry->xpath('link')[1]['href'];
-            $feedArray['source'] = $entry->xpath('link')[0]['href'];
+            $entry = $content->entry[0];
+            $feedArray['title'] = $entry->title;
+            $feedArray['body'] = $entry->summary;
+            $feedArray['image'] = $entry->link[1]['href'];
+            $feedArray['source'] = $entry->link[0]['href'];
 
         } else if ($publisherCode == 'larazon') {
 
@@ -166,11 +223,12 @@ class Scraper
      * @throws \Exception
      */
     public function readRss($publisherCode) {
-        if (!isset(self::$publishers[$publisherCode])) {
+        if (!isset($this->publishers[$publisherCode])) {
             throw new \Exception("The publisher '$publisherCode' was not found.");
         }
-        $rssUrl = self::$publishers[$publisherCode]['rss'];
+        $rssUrl = $this->publishers[$publisherCode]['rss'];
         $content = file_get_contents($rssUrl);
+
         return $this->readXML($content);
     }
 
@@ -185,6 +243,25 @@ class Scraper
 
     private function xpath($item, $path) {
         return (string) $item->xpath($path)[0];
+    }
+
+    private function removeNamespace($xml) {
+        $sxe = new \SimpleXMLElement($xml);
+        $dom_sxe = dom_import_simplexml($sxe);
+
+        $dom = new \DOMDocument('1.0');
+        $dom_sxe = $dom->importNode($dom_sxe, true);
+        $dom_sxe = $dom->appendChild($dom_sxe);
+
+        $element = $dom->childNodes->item(0);
+
+    // See what the XML looks like before the transformation
+        //echo "<pre>\n" . htmlspecialchars($dom->saveXML()) . "\n</pre>";
+        foreach ($sxe->getDocNamespaces() as $name => $uri) {
+            $element->removeAttributeNS($uri, $name);
+        }
+    // See what the XML looks like after the transformation
+        return "<pre>\n" . htmlspecialchars($dom->saveXML()) . "\n</pre>";
     }
 
 }
