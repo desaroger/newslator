@@ -3,15 +3,16 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+
+        {# Material #}
         <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
 
         {# Global styles #}
         <style>
-
             /* Submit button hack */
             input.hide-hack {
                 position: absolute;
@@ -19,8 +20,6 @@
                 height: 100%;
                 opacity: 0;
             }
-
-
         </style>
     </head>
     <body>
@@ -33,9 +32,6 @@
                     {#<li><a class="waves-effect waves-light" href="{{ path('homepage') }}">Frontpage</a></li>#}
                     <li><a class="waves-effect waves-light" href="{{ path('feed_index') }}">Feeds</a></li>
                 </ul>
-                <ul class="left">
-                    {% block actions %}{% endblock %}
-                </ul>
             </div>
         </nav>
         <br>
@@ -45,14 +41,21 @@
             {% block body %}{% endblock %}
         </div>
 
-        {# Javascript #}
-        {% block javascripts %}{% endblock %}
+        {# Javascripts #}
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
-
         <script>
             $(document).ready(function(){
+
+                // Image amplification
                 $('.materialboxed').materialbox();
+
+                // Navbar link activation
+                var currentPath = window.location.pathname;
+                $.each($('nav').find('li'), function() {
+                    var link = $(this).find('a').attr('href');
+                    $(this).toggleClass('active', link == currentPath);
+                });
             });
         </script>
 

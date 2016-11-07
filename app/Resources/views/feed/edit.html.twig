@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Feed edit</h1>
+    <h2>Feed edit</h2>
 
     {{ form_start(edit_form) }}
         {{ form_widget(edit_form) }}
 
-        {# Cancel and save buttons #}
+        {# Buttons right (cancel, save) #}
         <div class="right">
             <a href="{{ path('feed_show', { 'id': feed.id }) }}" class="waves-effect waves-teal btn-flat">Cancel</a>
             <button class="btn waves-effect waves-light" type="submit" name="action">Save
@@ -16,16 +16,3 @@
     {{ form_end(edit_form) }}
 
 {% endblock %}
-
-{% block actions %}
-
-{% endblock %}
-
-{% block stylesheets %}
-<style>
-
-
-</style>
-{% endblock %}
-
-
