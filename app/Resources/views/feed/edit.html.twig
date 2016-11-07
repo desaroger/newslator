@@ -1,21 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Feed edit</h1>
+    <h2>Feed edit</h2>
 
     {{ form_start(edit_form) }}
         {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
+
+        {# Buttons right (cancel, save) #}
+        <div class="right">
+            <a href="{{ path('feed_show', { 'id': feed.id }) }}" class="waves-effect waves-teal btn-flat">Cancel</a>
+            <button class="btn waves-effect waves-light" type="submit" name="action">Save
+                <input type="submit" value="" class="hide-hack"/>
+            </button>
+        </div>
     {{ form_end(edit_form) }}
 
-    <ul>
-        <li>
-            <a href="{{ path('feed_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
 {% endblock %}

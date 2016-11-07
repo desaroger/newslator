@@ -7,6 +7,11 @@ services:
     app.scraper:
       class: AppBundle\Utils\Scraper
       arguments: ['@doctrine.orm.entity_manager', '@service_container']
+    app.twig_extension:
+      class: AppBundle\Twig\AppExtension
+      public: false
+      tags:
+        - { name: twig.extension }
     templating.engine.pug:
         class: Pug\PugSymfonyEngine
         arguments: ["@kernel"]

@@ -1,48 +1,56 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Feed</h1>
+    <h2>Feed</h2>
 
+    {# Feed data #}
     <table>
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ feed.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ feed.title }}</td>
-            </tr>
-            <tr>
-                <th>Body</th>
-                <td>{{ feed.body }}</td>
-            </tr>
-            <tr>
-                <th>Image</th>
-                <td>{{ feed.image }}</td>
-            </tr>
-            <tr>
-                <th>Source</th>
-                <td>{{ feed.source }}</td>
-            </tr>
-            <tr>
-                <th>Publisher</th>
-                <td>{{ feed.publisher }}</td>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <td>{{ feed.id }}</td>
+        </tr>
+        <tr>
+            <th>Title</th>
+            <td>{{ feed.title }}</td>
+        </tr>
+        <tr>
+            <th>Body</th>
+            <td>{{ feed.body }}</td>
+        </tr>
+        <tr>
+            <th>Image</th>
+            <td>{{ feed.image }}</td>
+        </tr>
+        <tr>
+            <th>Source</th>
+            <td>{{ feed.source }}</td>
+        </tr>
+        <tr>
+            <th>Publisher</th>
+            <td>{{ feed.publisher }}</td>
+        </tr>
         </tbody>
     </table>
+    <br>
 
-    <ul>
-        <li>
-            <a href="{{ path('feed_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('feed_edit', { 'id': feed.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+    {# Buttons left (backToList) #}
+    <div class="left">
+        <a href="{{ path('feed_index') }}" class="btn-flat waves-effect waves-light">
+            <i class="material-icons left">undo</i>
+            Back to the list
+        </a>
+    </div>
+
+    {# Buttons right (delete, edit) #}
+    <div class="right">
+        {{ form_start(delete_form) }}
+            <a class="waves-effect waves-teal btn-flat">
+                <input type="submit" value="" class="hide-hack" style="margin-left: -2em;">
+                delete
+            </a>
+            <a href="{{ path('feed_edit', { 'id': feed.id }) }}" class="waves-effect waves-teal btn">Edit</a>
+        {{ form_end(delete_form) }}
+    </div>
+
 {% endblock %}

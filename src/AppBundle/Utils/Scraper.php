@@ -12,6 +12,8 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 use AppBundle\Entity\Feed;
 
+use Sunra\PhpSimple\HtmlDomParser;
+
 class Scraper
 {
     /**
@@ -192,17 +194,26 @@ class Scraper
             $entry = $content->xpath('channel/item')[0];
             $feedArray['title'] = $entry->xpath('title')[0];
             $feedArray['body'] = $entry->xpath('description')[0];
-            if (count($feedArray['body']->xpath('img'))) {
-                $feedArray['image'] = $feedArray['body']->xpath('img')[0]['src'];
+            $dom = HtmlDomParser::str_get_html( (string) $feedArray['body'] );
+            $images = $dom->find('img');
+            if (count($images)) {
+                reset($images);
+                $image = $images[key($images)];
+                $feedArray['image'] = $image->src;
             }
             $feedArray['source'] = $entry->xpath('link')[0];
-
         }
 
         // Convert to a Feed Entity
         $feed = new Feed();
         $feed->setTitle(trim((string) $feedArray['title']));
-        $feed->setBody(trim((string) $feedArray['body']));
+
+        // Body html fixed
+        $body = trim((string) $feedArray['body']);
+        $body = htmlspecialchars_decode($body); // Decode html
+        $body = strip_tags($body);              // Delete it
+        $body = htmlspecialchars_decode($body); // Redecode (sometimes there is br encoded)
+        $feed->setBody($body);
         if (isset($feedArray['image'])) {
             $feed->setImage(trim((string) $feedArray['image']));
         }
