@@ -1,15 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Feeds list</h1>
+    <h2>Feeds list</h2>
 
-    <table>
+    {# Table with feeds #}
+    <table class="striped">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Title</th>
-                <th>Body</th>
                 <th>Image</th>
+                <th>Title</th>
+                <th class="hide-on-med-and-down">Body</th>
                 <th>Source</th>
                 <th>Publisher</th>
                 <th>Actions</th>
@@ -19,11 +20,15 @@
         {% for feed in feeds %}
             <tr>
                 <td><a href="{{ path('feed_show', { 'id': feed.id }) }}">{{ feed.id }}</a></td>
+                <td>
+                    {% if feed.image %}
+                        <img src="{{ feed.image }}" alt="" height=100 class="materialboxed" data-caption="{{ feed.title }}">
+                    {% endif %}
+                </td>
                 <td>{{ feed.title }}</td>
-                <td>{{ feed.body }}</td>
-                <td>{{ feed.image }}</td>
-                <td>{{ feed.source }}</td>
-                <td>{{ feed.publisher }}</td>
+                <td class="hide-on-med-and-down">{{ feed.body }}</td>
+                <td><a href="{{ feed.source }}" target="_blank">Read</a></td>
+                <td>{{ feed.publisher | publisherName }}</td>
                 <td>
                     <ul>
                         <li>
@@ -39,9 +44,11 @@
         </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('feed_new') }}">Create a new feed</a>
-        </li>
-    </ul>
+    {# Big add button #}
+    <div class="fixed-action-btn">
+        <a href="{{ path('feed_new') }}" class="btn-floating btn-large waves-effect waves-circle waves-light red">
+            <i class="large material-icons ">add</i>
+        </a>
+    </div>
+
 {% endblock %}

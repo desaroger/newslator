@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "90bed807b77e7b5c921d6dbc9aa7bf64",
-    "content-hash": "d86e377da55339b271e1171f290ac67a",
+    "hash": "6b566f8b32586448d83854c86dcde7db",
+    "content-hash": "cf36973def940c3a6853243ded2ff219",
     "packages": [
         {
             "name": "cebe/markdown",
@@ -2170,6 +2170,49 @@
             ],
             "description": "A security checker for your composer.lock",
             "time": "2016-09-23 18:09:57"
+        },
+        {
+            "name": "sunra/php-simple-html-dom-parser",
+            "version": "v1.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sunra/php-simple-html-dom-parser.git",
+                "reference": "f910346ce47513a49ed5b8de197cde26c3f0b193"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sunra/php-simple-html-dom-parser/zipball/f910346ce47513a49ed5b8de197cde26c3f0b193",
+                "reference": "f910346ce47513a49ed5b8de197cde26c3f0b193",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Sunra\\PhpSimple\\HtmlDomParser": "Src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sunra",
+                    "email": "sunra@yandex.ru",
+                    "homepage": "https://github.com/sunra"
+                }
+            ],
+            "description": "Composer adaptation of: A HTML DOM parser written in PHP5+ let you manipulate HTML in a very easy way! Require PHP 5+. Supports invalid HTML. Find tags on an HTML page with selectors just like jQuery. Extract contents from HTML in a single line.",
+            "homepage": "https://github.com/sunra/php-simple-html-dom-parser",
+            "keywords": [
+                "dom",
+                "html",
+                "parser"
+            ],
+            "time": "2016-05-20 11:21:15"
         },
         {
             "name": "swiftmailer/swiftmailer",

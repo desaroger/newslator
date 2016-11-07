@@ -5,7 +5,15 @@
 
     {{ form_start(form) }}
         {{ form_widget(form) }}
-        <input type="submit" value="Create" />
+
+        {# Big save button #}
+        <div class="fixed-action-btn">
+            <a type="submit" class="btn-floating btn-large waves-effect waves-circle waves-light green">
+                <input type="submit" value="" class="hide-hack"/>
+                <i class="large material-icons ">done</i>
+            </a>
+        </div>
+
     {{ form_end(form) }}
 
     <ul>
@@ -13,4 +21,10 @@
             <a href="{{ path('feed_index') }}">Back to the list</a>
         </li>
     </ul>
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+
+    </style>
 {% endblock %}
