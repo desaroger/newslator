@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h2>Feeds list</h2>
+    <h3>Feeds list</h3>
 
     {# Table with feeds #}
     <table class="striped">
@@ -23,9 +23,9 @@
                     <td><a href="{{ path('feed_show', { 'id': feed.id }) }}">{{ feed.id }}</a></td>
 
                     {# Image #}
-                    <td>
+                    <td class="td-image">
                         {% if feed.image %}
-                            <img src="{{ feed.image }}" alt="" height=100 class="materialboxed" data-caption="{{ feed.title }}">
+                            <img src="{{ feed.image }}" alt="" data-caption="{{ feed.title }}">
                         {% endif %}
                     </td>
 
@@ -53,6 +53,10 @@
         </tbody>
     </table>
 
+    <div class="navigation">
+        {{ knp_pagination_render(feeds) }}
+    </div>
+
     {# FAB add #}
     <div class="fixed-action-btn">
         <a href="{{ path('feed_new') }}" class="btn-floating btn-large waves-effect waves-circle waves-light red">
@@ -60,4 +64,13 @@
         </a>
     </div>
 
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .td-image img {
+            max-height: 100px;
+            max-width: 150px;
+        }
+    </style>
 {% endblock %}
