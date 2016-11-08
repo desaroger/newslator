@@ -7,6 +7,9 @@ services:
     app.scraper:
       class: AppBundle\Utils\Scraper
       arguments: ['@doctrine.orm.entity_manager', '@service_container']
+    app.scraper2:
+      class: AppBundle\Utils\Scraper2
+      arguments: ['@doctrine.orm.entity_manager', '@service_container']
     app.twig_extension:
       class: AppBundle\Twig\AppExtension
       public: false

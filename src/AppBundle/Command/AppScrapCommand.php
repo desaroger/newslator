@@ -24,9 +24,9 @@ class AppScrapCommand extends ContainerAwareCommand
     {
         $publisherCode = $input->getArgument('publisherCode');
 
-        $scraper = $this->getContainer()->get('app.scraper');
+        $scraper = $this->getContainer()->get('app.scraper2');
 
-        $feeds = $scraper->readAndPersist($publisherCode);
+        $feeds = $scraper->read($publisherCode);
 
         $output->writeln('Success scraping:');
         foreach ($feeds as $feed) {
