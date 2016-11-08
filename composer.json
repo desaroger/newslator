@@ -31,7 +31,8 @@
         "kylekatarnls/jade-symfony": "^2.1",
         "pug-php/pug-symfony": "^2.1",
         "sunra/php-simple-html-dom-parser": "^1.5",
-        "knplabs/knp-paginator-bundle": "^2.5"
+        "knplabs/knp-paginator-bundle": "^2.5",
+        "symfony/dom-crawler": "^3.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
