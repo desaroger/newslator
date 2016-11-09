@@ -1,8 +1,8 @@
-<div class="card medium">
+<div class="card {{ body ? 'medium' : '' }}">
 
     {# Image #}
-    <div class="card-image">
-        {% if image|default(0) %}
+    <div class="card-image {{ image | default(0) ? '' : 'no-image' }}">
+        {% if image | default(0) %}
             <img src="{{ image }}">
         {% endif %}
         <span class="card-title">{{ title | default('untitled') }}</span>
@@ -10,7 +10,7 @@
 
     {# Body #}
     <div class="card-content">
-        {{ body | raw }}
+        <p>{{ body | raw }}</p>
     </div>
 
     {# Footer #}

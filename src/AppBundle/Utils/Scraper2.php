@@ -107,7 +107,9 @@ class Scraper2
 //        $ch = \curl_init($url);
 //        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 //        curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
-//        curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
+//        curl_setopt($ch, CURLOPT_USERAGENT, 'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)');
+////        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)');
+////        curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
 //        $html = curl_exec($ch);
 //        curl_close($ch);
 
@@ -212,6 +214,11 @@ class Scraper2
             $rawFeed[$prop] = $this->absolutizeUrl($rawFeed[$prop], $base);
         }
 
+        // Extra
+        if (strpos($rawFeed['image'], 'transparent') > 0) {
+            $rawFeed['image'] = '';
+        }
+
         // Create Feed
         $feed = new Feed();
         $feed->setTitle($rawFeed['title']);
@@ -272,7 +279,6 @@ class Scraper2
 
         // Find existing Feed
         $previousFeed = $repository->findOneBy([
-            'title' => $feed->getTitle(),
             'created' => new \DateTime(),
             'publisher' => $feed->getPublisher()
         ]);
