@@ -14,6 +14,9 @@ use AppBundle\Entity\Feed;
 
 use Sunra\PhpSimple\HtmlDomParser;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Scraper
 {
     /**
