@@ -146,7 +146,10 @@ class Scraper2
         } else if ($publisher == 'elmundo') {
             $article = $crawler->filter('body .flex-a .content-item:first-child')->first();
             $rawFeed['title'] = $article->filter('article > header a')->first()->text();
-            $rawFeed['body'] = $article->filter('article > p.entradilla')->first()->text();
+            $possibleBodies = $article->filter('article > p.entradilla');
+            if (count($possibleBodies)) {
+                $rawFeed['body'] = $possibleBodies->first()->text();
+            }
             $rawFeed['image'] = 'http:' . $article->filter('article > figure[itemprop="image"] img')->first()->attr('src');
             $rawFeed['source'] = $article->filter('article > header a')->first()->attr('href');
 
