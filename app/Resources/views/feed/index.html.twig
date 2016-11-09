@@ -1,68 +1,76 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h3>Feeds list</h3>
+
+    {% if search | default(false) %}
+        <h3>Results ({{ feeds | length }}):</h3>
+    {% else %}
+        <h3>Feeds list</h3>
+    {% endif %}
+
 
     {# Table with feeds #}
     <table class="striped">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Image</th>
-                <th>Title</th>
-                <th class="hide-on-med-and-down">Body</th>
-                <th>Source</th>
-                <th>Publisher</th>
-                <th>Actions</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Image</th>
+            <th>Title</th>
+            <th class="hide-on-med-and-down">Body</th>
+            <th>Source</th>
+            <th>Publisher</th>
+            <th>Actions</th>
+        </tr>
         </thead>
         <tbody>
-            {% for feed in feeds %}
-                <tr>
-                    {# id #}
-                    <td><a href="{{ path('feed_show', { 'id': feed.id }) }}">{{ feed.id }}</a></td>
+        {% for feed in feeds %}
+            <tr>
+                {# id #}
+                <td><a href="{{ path('feed_show', { 'id': feed.id }) }}">{{ feed.id }}</a></td>
 
-                    {# Image #}
-                    <td class="td-image">
-                        {% if feed.image %}
-                            <img src="{{ feed.image }}" alt="" data-caption="{{ feed.title }}">
-                        {% endif %}
-                    </td>
+                {# Image #}
+                <td class="td-image">
+                    {% if feed.image %}
+                        <img src="{{ feed.image }}" alt="" data-caption="{{ feed.title }}">
+                    {% endif %}
+                </td>
 
-                    {# Title #}
-                    <td>{{ feed.title }}</td>
+                {# Title #}
+                <td>{{ feed.title }}</td>
 
-                    {# Body (hidden on mobile) #}
-                    <td class="hide-on-med-and-down">{{ feed.body }}</td>
+                {# Body (hidden on mobile) #}
+                <td class="hide-on-med-and-down">{{ feed.body }}</td>
 
-                    {# Source #}
-                    <td><a href="{{ feed.source }}" target="_blank">Read</a></td>
+                {# Source #}
+                <td><a href="{{ feed.source }}" target="_blank">Read</a></td>
 
-                    {# Publisher #}
-                    <td>{{ feed.publisher | publisherName }}</td>
+                {# Publisher #}
+                <td>{{ feed.publisher | publisherName }}</td>
 
-                    {# Actions #}
-                    <td>
-                        <ul>
-                            <li><a href="{{ path('feed_show', { 'id': feed.id }) }}">show</a></li>
-                            <li><a href="{{ path('feed_edit', { 'id': feed.id }) }}">edit</a></li>
-                        </ul>
-                    </td>
-                </tr>
-            {% endfor %}
+                {# Actions #}
+                <td>
+                    <ul>
+                        <li><a href="{{ path('feed_show', { 'id': feed.id }) }}">show</a></li>
+                        <li><a href="{{ path('feed_edit', { 'id': feed.id }) }}">edit</a></li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
 
-    <div class="navigation">
+    {% if knp_pagination_render is defined %}
         {{ knp_pagination_render(feeds) }}
-    </div>
+    {% endif %}
 
     {# FAB add #}
-    <div class="fixed-action-btn">
-        <a href="{{ path('feed_new') }}" class="btn-floating btn-large waves-effect waves-circle waves-light red">
-            <i class="large material-icons ">add</i>
-        </a>
-    </div>
+    {% if not search | default(false) %}
+        <div class="fixed-action-btn">
+            <a href="{{ path('feed_new') }}" class="btn-floating btn-large waves-effect waves-circle waves-light red">
+                <i class="large material-icons ">add</i>
+            </a>
+        </div>
+    {% endif %}
 
 {% endblock %}
 
