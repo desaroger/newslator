@@ -155,13 +155,19 @@ class Scraper2
             $titleLink = $article->filter('article .art-tit a')->first();
             $rawFeed['title'] = $titleLink->text();
             $rawFeed['source'] = $titleLink->attr('href');
-            $rawFeed['body'] = $article->filter('article > .leadin')->first()->text();
+            $possibleBodies = $article->filter('article > .leadin');
+            if (count($possibleBodies)) {
+                $rawFeed['body'] = $possibleBodies->first()->text();
+            }
             $rawFeed['image'] = $article->filter('article > figure.art-fig img')->first()->attr('src');
 
-
         } else if ($publisher == 'larazon') {
-            $article = $crawler->filter('body .teaser-agrupador-apertura')->first();
+            $biggerFirstTitle = $crawler->filter('body .headline.xlarge')->first();
+            $article = $biggerFirstTitle->parents()->first()->parents()->first();
+
+//            $article = $crawler->filter('body .teaser-agrupador-apertura')->first();
             $titleLink = $article->filter('.teaserPrincipal > .headline a');
+
             $rawFeed['title'] = $titleLink->text();
             $rawFeed['source'] = $titleLink->attr('href');
             $rawFeed['source'] = $this->absolutizeUrl($rawFeed['source'], 'http://www.larazon.es');
@@ -169,14 +175,16 @@ class Scraper2
             $rawFeed['image'] = $this->absolutizeUrl($rawFeed['image'], 'http://www.larazon.es');
             $rawFeed['body'] = $article->filter('.teaserPrincipal > .teaser p:first-child')->first()->text();
 
-
         } else if ($publisher == 'elperiodico') {
             $article = $crawler->filter('body .ep-noticia.tam-1')->first();
             $titleLink = $article->filter('h2 a');
             $rawFeed['title'] = $titleLink->text();
             $rawFeed['source'] = $titleLink->attr('href');
             $rawFeed['source'] = $this->absolutizeUrl($rawFeed['source'], 'http://www.elperiodico.com/');
-            $rawFeed['body'] = $article->filter('.subtitulo')->first()->text();
+            $possibleBodies = $article->filter('.subtitulo');
+            if (count($possibleBodies)) {
+                $rawFeed['body'] = $possibleBodies->first()->text();
+            }
             $rawFeed['image'] = $article->filter('.thumb img')->first()->attr('src');
         }
 
