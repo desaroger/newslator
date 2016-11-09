@@ -239,8 +239,10 @@ class Scraper2
      * will be read.
      * @return array - An array of created/updated feeds.
      */
-    public function read($targetPublisher = 12)
+    public function read($targetPublisher)
     {
+        $logger = $this->container->get('logger');
+
         // Determine if scrap one or all the publishers
         $publishers = [];
         if ($targetPublisher) {
@@ -254,6 +256,7 @@ class Scraper2
             $html = $this->loadHtml($publisher);
             $feed = $this->htmlToFeed($html, $publisher);
             $feed = $this->persistFeed($feed);
+            $logger->info("Scraped '$publisher'", $feed->toArray());
             $feeds[] = $feed;
         }
 
