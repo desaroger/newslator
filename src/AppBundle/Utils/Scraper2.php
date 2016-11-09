@@ -138,7 +138,10 @@ class Scraper2
             $article = $crawler->filter('body article.articulo--primero')->first();
             $rawFeed['title'] = $article->filter('.articulo__interior > [itemprop="headline"] > a')->first()->text();
             $rawFeed['body'] = $article->filter('.articulo__interior > [itemprop="description"]')->first()->text();
-            $rawFeed['image'] = $article->filter('.articulo__interior > figure[itemprop="image"] a img')->first()->attr('data-src');
+            $possibleImages = $article->filter('.articulo__interior > figure[itemprop="image"] a img');
+            if (count($possibleImages)) {
+                $rawFeed['image'] = $possibleImages->first()->attr('data-src');
+            }
             $rawFeed['source'] = $article->filter('.articulo__interior > [itemprop="headline"] a')->first()->attr('href');
             $rawFeed['source'] = $this->absolutizeUrl($rawFeed['source'], 'http://elpais.com');
 
