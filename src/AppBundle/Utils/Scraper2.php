@@ -24,7 +24,7 @@ class Scraper2
      *
      * @var array
      */
-    public $publishers = [
+    public static $staticPublishers = [
         'elpais' => [
             'code' => 'elpais',
             'printable' => 'El País',
@@ -62,6 +62,7 @@ class Scraper2
         $this->em = $em;
         $this->container = $container;
         $this->repository = $container->get('doctrine')->getRepository('AppBundle:Feed');
+        $this->publishers = self::$staticPublishers;
     }
 
     /**
