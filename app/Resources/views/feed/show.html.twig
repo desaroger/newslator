@@ -45,12 +45,38 @@
     {# Buttons right (delete, edit) #}
     <div class="right">
         {{ form_start(delete_form) }}
-            <a class="waves-effect waves-teal btn-flat">
-                <input type="submit" value="" class="hide-hack" style="margin-left: -2em;">
+            <a class="waves-effect waves-teal btn-flat" href="#delete_modal">
+                {#<input type="submit" value="" class="hide-hack" style="margin-left: -2em;">#}
                 delete
             </a>
             <a href="{{ path('feed_edit', { 'id': feed.id }) }}" class="waves-effect waves-teal btn">Edit</a>
         {{ form_end(delete_form) }}
     </div>
 
+
+    {# Delete Modal Structure #}
+    <div id="delete_modal" class="modal">
+        <div class="modal-content">
+            <h4>Are you sure?</h4>
+            <p>You are going to delete this feed. This action can not be undone.</p>
+        </div>
+        <div class="modal-footer">
+            {{ form_start(delete_form) }}
+            <a class="waves-effect waves-green btn">
+                delete
+                <input type="submit" value="" class="hide-hack">
+            </a>
+            <a class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+            {{ form_end(delete_form) }}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $(document).ready(function(){
+            $('.modal').modal();
+        });
+    </script>
 {% endblock %}

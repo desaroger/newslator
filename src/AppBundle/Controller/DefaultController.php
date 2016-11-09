@@ -23,19 +23,34 @@ class DefaultController extends Controller
             ->where('feed.created >= :today')
             ->setParameter('today', date("Y-m-d", time()))
             ->getQuery();
-        $rawEntries = $query->getResult();
+        $feeds = $query->getResult();
 
-        // Sort by publisher
-        $entries = [];
-        foreach($rawEntries as $entry) {
-            $entry = $entry->toArray();
-            $publisher = $entry['publisher'];
-            $entries[] = $entry;
-        }
+        $feeds = array_map(function ($feed) {
+            return $feed->toArray();
+        }, $feeds);
 
         // replace this example code with whatever you need
         return $this->render('index.html.twig', [
-            'entries' => $entries
+            'entries' => $feeds
+        ]);
+    }
+
+    /**
+     * @Route("/scraper", name="scraper")
+     */
+    public function scraperAction(Request $request)
+    {
+        $scraper = $this->get('app.scraper2');
+
+        $feeds = $scraper->read(null);
+
+        $feeds = array_map(function ($feed) {
+            return $feed->toArray();
+        }, $feeds);
+
+        // replace this example code with whatever you need
+        return $this->render('index.html.twig', [
+            'entries' => $feeds
         ]);
     }
 

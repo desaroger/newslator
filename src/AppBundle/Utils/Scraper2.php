@@ -177,12 +177,18 @@ class Scraper2
             $rawFeed['title'] = $titleLink->text();
             $rawFeed['source'] = $titleLink->attr('href');
             $rawFeed['source'] = $this->absolutizeUrl($rawFeed['source'], 'http://www.larazon.es');
-            $rawFeed['image'] = $article->filter('.teaserPrincipal > .media img')->first()->attr('src');
-            $rawFeed['image'] = $this->absolutizeUrl($rawFeed['image'], 'http://www.larazon.es');
+            $possibleImages = $article->filter('.teaserPrincipal > .media img');
+            if (count($possibleImages)) {
+                $rawFeed['image'] = $possibleImages->first()->attr('src');
+                $rawFeed['image'] = $this->absolutizeUrl($rawFeed['image'], 'http://www.larazon.es');
+            }
             $rawFeed['body'] = $article->filter('.teaserPrincipal > .teaser p:first-child')->first()->text();
 
         } else if ($publisher == 'elperiodico') {
             $article = $crawler->filter('body .ep-noticia.tam-1')->first();
+            if (count($article) == 0) {
+                $article = $crawler->filter('body .ep-noticia.tam-2')->first();
+            }
             $titleLink = $article->filter('h2 a');
             $rawFeed['title'] = $titleLink->text();
             $rawFeed['source'] = $titleLink->attr('href');
@@ -213,6 +219,9 @@ class Scraper2
 
         // Url
         foreach(['source', 'image'] as $prop) {
+            if ($rawFeed['image'] == '') {
+                continue;
+            }
             $base = $this->publishers[$publisher]['url'];
             $rawFeed[$prop] = $this->absolutizeUrl($rawFeed[$prop], $base);
         }
