@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Newslator - All your news in one place{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
@@ -13,12 +13,20 @@
 
         {# Global styles #}
         <style>
+            /* Logo */
+            .brand-logo {
+                margin-left: 20px;
+            }
+
             /* Submit button hack */
             input.hide-hack {
                 position: absolute;
                 width: 100%;
                 height: 100%;
-                opacity: 0;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
             }
 
             /* Search functionality */
@@ -32,6 +40,23 @@
                 display: block;
             }
             #close-search { color: #444; }
+
+            /* Scraper button */
+            nav #scraper img {
+                display: none;
+            }
+            nav.scraping #scraper i {
+                display: none;
+            }
+            nav.scraping #scraper img {
+                display: block;
+            }
+            #scraper, #scraper img {
+                height: 64px;
+            }
+            #scraper img {
+                color: white;
+            }
 
         </style>
     </head>
@@ -48,11 +73,16 @@
                     </div>
                 </form>
                 <div id="nav-not-find">
-                    <a href="{{ path('homepage') }}" class="brand-logo center">Newslator</a>
+                    <a href="{{ path('homepage') }}" class="brand-logo left" title="Newslator"> <i class="material-icons">radio</i> Newslator</a>
                     <ul id="nav-mobile" class="right hide-on-small-and-down">
-                        <li><a id="open-search"><i class="material-icons">search</i></a></li>
-                        {#<li><a class="waves-effect waves-light" href="{{ path('homepage') }}">Frontpage</a></li>#}
-                        <li><a class="waves-effect waves-light" href="{{ path('feed_index') }}">Feeds</a></li>
+                        <li><a id="open-search" title="Search for feeds"><i class="material-icons">search</i></a></li>
+                        <li><a class="waves-effect waves-light" title="Feeds list" href="{{ path('feed_index') }}"><i class="material-icons">format_list_bulleted</i></a></li>
+                        <li>
+                            <a id="scraper" title="Run scraper">
+                                <i class="material-icons">trending_down</i>
+                                <img width=25 src="/rolling.svg">
+                            </a>
+                        </li>
                     </ul>
                 </div>
 
@@ -69,14 +99,12 @@
         <br>
 
         {# Javascripts #}
-
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
         <script>
             $(document).ready(function(){
 
                 var isSearch = {{ search | default(false) ? 'true' : 'false' }};
-                console.log('is', isSearch);
 
                 // Image amplification
                 $('.materialboxed').materialbox();
@@ -113,6 +141,27 @@
                         window.location.href = url;
                     }
                 };
+
+                // Scraper
+                var scraping = false;
+                var $scraper = $('#scraper');
+                $scraper.on('click', function () {
+                    if (scraping) {
+                        return;
+                    }
+                    scraping = true;
+                    $('nav').addClass('scraping');
+                    var jqxhr = $.ajax("{{ path('scraper') }}")
+                            .fail(function(e) {
+                                alert("Error while scraping.");
+                                console.log('scraper error', e)
+                            })
+                            .always(function() {
+                                scraping = false;
+                                location.reload();
+                            });
+                });
+
             });
         </script>
         {% block javascript %}{% endblock %}
