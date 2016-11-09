@@ -3,9 +3,10 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Feed;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Feed controller.
@@ -23,10 +24,6 @@ class FeedController extends Controller
      */
     public function indexAction(Request $request)
     {
-//        $em = $this->getDoctrine()->getManager();
-//
-//        $feeds = $em->getRepository('AppBundle:Feed')->findAll();
-
         $em = $this->getDoctrine()->getManager();
         $dql   = "SELECT f FROM AppBundle:Feed f";
         $query = $em->createQuery($dql);
@@ -52,10 +49,6 @@ class FeedController extends Controller
      */
     public function indexPaginatedAction(Request $request, $page = 1)
     {
-//        $em = $this->getDoctrine()->getManager();
-//
-//        $feeds = $em->getRepository('AppBundle:Feed')->findAll();
-
         $em = $this->getDoctrine()->getManager();
         $dql   = "SELECT f FROM AppBundle:Feed f";
         $query = $em->createQuery($dql);
@@ -69,6 +62,31 @@ class FeedController extends Controller
 
         return $this->render('feed/index.html.twig', array(
             'feeds' => $pagination,
+        ));
+    }
+
+    /**
+     * Finds feed entities.
+     *
+     *
+     * @Route("/search/{term}", name="feed_search")
+     * @Method("GET")
+     */
+    public function indexSearchAction(Request $request, $term)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository('AppBundle:Feed');
+        $feeds = $repository->createQueryBuilder('f')
+            ->where('f.title LIKE :term')
+            ->orWhere('f.body LIKE :term')
+            ->setParameter('term', "%$term%")
+            ->getQuery()
+            ->getResult();
+
+        return $this->render('feed/index.html.twig', array(
+            'feeds' => $feeds,
+            'search' => true,
+            'term' => $term
         ));
     }
 
@@ -172,6 +190,6 @@ class FeedController extends Controller
             ->setAction($this->generateUrl('feed_delete', array('id' => $feed->getId())))
             ->setMethod('DELETE')
             ->getForm()
-        ;
+            ;
     }
 }

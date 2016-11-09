@@ -24,7 +24,7 @@ class Scraper2
      *
      * @var array
      */
-    public $publishers = [
+    public static $staticPublishers = [
         'elpais' => [
             'code' => 'elpais',
             'printable' => 'El País',
@@ -62,6 +62,7 @@ class Scraper2
         $this->em = $em;
         $this->container = $container;
         $this->repository = $container->get('doctrine')->getRepository('AppBundle:Feed');
+        $this->publishers = self::$staticPublishers;
     }
 
     /**
@@ -106,7 +107,9 @@ class Scraper2
 //        $ch = \curl_init($url);
 //        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 //        curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
-//        curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
+//        curl_setopt($ch, CURLOPT_USERAGENT, 'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)');
+////        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)');
+////        curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
 //        $html = curl_exec($ch);
 //        curl_close($ch);
 
@@ -143,7 +146,10 @@ class Scraper2
         } else if ($publisher == 'elmundo') {
             $article = $crawler->filter('body .flex-a .content-item:first-child')->first();
             $rawFeed['title'] = $article->filter('article > header a')->first()->text();
-            $rawFeed['body'] = $article->filter('article > p.entradilla')->first()->text();
+            $possibleBodies = $article->filter('article > p.entradilla');
+            if (count($possibleBodies)) {
+                $rawFeed['body'] = $possibleBodies->first()->text();
+            }
             $rawFeed['image'] = 'http:' . $article->filter('article > figure[itemprop="image"] img')->first()->attr('src');
             $rawFeed['source'] = $article->filter('article > header a')->first()->attr('href');
 
@@ -211,6 +217,11 @@ class Scraper2
             $rawFeed[$prop] = $this->absolutizeUrl($rawFeed[$prop], $base);
         }
 
+        // Extra
+        if (strpos($rawFeed['image'], 'transparent') > 0) {
+            $rawFeed['image'] = '';
+        }
+
         // Create Feed
         $feed = new Feed();
         $feed->setTitle($rawFeed['title']);
@@ -231,8 +242,10 @@ class Scraper2
      * will be read.
      * @return array - An array of created/updated feeds.
      */
-    public function read($targetPublisher = 12)
+    public function read($targetPublisher)
     {
+        $logger = $this->container->get('logger');
+
         // Determine if scrap one or all the publishers
         $publishers = [];
         if ($targetPublisher) {
@@ -246,6 +259,7 @@ class Scraper2
             $html = $this->loadHtml($publisher);
             $feed = $this->htmlToFeed($html, $publisher);
             $feed = $this->persistFeed($feed);
+            $logger->info("Scraped '$publisher'", $feed->toArray());
             $feeds[] = $feed;
         }
 
@@ -271,7 +285,6 @@ class Scraper2
 
         // Find existing Feed
         $previousFeed = $repository->findOneBy([
-            'title' => $feed->getTitle(),
             'created' => new \DateTime(),
             'publisher' => $feed->getPublisher()
         ]);

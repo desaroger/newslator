@@ -10,6 +10,9 @@ services:
     app.scraper2:
       class: AppBundle\Utils\Scraper2
       arguments: ['@doctrine.orm.entity_manager', '@service_container']
+    app.feedType:
+      class: AppBundle\Form\FeedType
+      arguments: ['app.scraper2']
     app.twig_extension:
       class: AppBundle\Twig\AppExtension
       public: false

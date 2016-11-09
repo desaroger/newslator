@@ -30,34 +30,13 @@ class DefaultController extends Controller
         foreach($rawEntries as $entry) {
             $entry = $entry->toArray();
             $publisher = $entry['publisher'];
-            $entry['publisherName'] = $this->codeToName($publisher);
-            $entries[$publisher] = $entry;
+            $entries[] = $entry;
         }
 
         // replace this example code with whatever you need
         return $this->render('index.html.twig', [
             'entries' => $entries
         ]);
-    }
-
-    /**
-     * Transform a publisher code to a printable name
-     *
-     * @param $publisherCode
-     * @return string - The printable name
-     */
-    public function codeToName($publisherCode) {
-        /**
-         * TODO: Move the publishers code to a external service
-         */
-        $valueMap = [
-            'elpais' => 'El País',
-            'elmundo' => 'El Mundo',
-            'elconfidencial' => 'El Confidencial',
-            'larazon' => 'La Razón',
-            'elperiodico' => 'El Periódico'
-        ];
-        return $valueMap[$publisherCode];
     }
 
 }

@@ -20,18 +20,42 @@
                 height: 100%;
                 opacity: 0;
             }
+
+            /* Search functionality */
+            nav #nav-find {
+                display: none;
+            }
+            nav.finding #nav-not-find {
+                display: none;
+            }
+            nav.finding #nav-find {
+                display: block;
+            }
+            #close-search { color: #444; }
+
         </style>
     </head>
     <body>
 
         {# Header #}
-        <nav>
+        <nav class="{{ search | default(false) ? 'finding' : '' }}">
             <div class="nav-wrapper yellow darken-2">
-                <a href="{{ path('homepage') }}" class="brand-logo center">Newslator</a>
-                <ul id="nav-mobile" class="right hide-on-small-and-down">
-                    {#<li><a class="waves-effect waves-light" href="{{ path('homepage') }}">Frontpage</a></li>#}
-                    <li><a class="waves-effect waves-light" href="{{ path('feed_index') }}">Feeds</a></li>
-                </ul>
+                <form id="nav-find" onsubmit="return false;">
+                    <div class="input-field">
+                        <input id="search" type="search" value="{{ term | default('') }}" required>
+                        <label for="search"><i class="material-icons">search</i></label>
+                        <i id="close-search" class="material-icons">close</i>
+                    </div>
+                </form>
+                <div id="nav-not-find">
+                    <a href="{{ path('homepage') }}" class="brand-logo center">Newslator</a>
+                    <ul id="nav-mobile" class="right hide-on-small-and-down">
+                        <li><a id="open-search"><i class="material-icons">search</i></a></li>
+                        {#<li><a class="waves-effect waves-light" href="{{ path('homepage') }}">Frontpage</a></li>#}
+                        <li><a class="waves-effect waves-light" href="{{ path('feed_index') }}">Feeds</a></li>
+                    </ul>
+                </div>
+
             </div>
         </nav>
         <br>
@@ -45,10 +69,14 @@
         <br>
 
         {# Javascripts #}
+
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
         <script>
             $(document).ready(function(){
+
+                var isSearch = {{ search | default(false) ? 'true' : 'false' }};
+                console.log('is', isSearch);
 
                 // Image amplification
                 $('.materialboxed').materialbox();
@@ -59,8 +87,35 @@
                     var link = $(this).find('a').attr('href');
                     $(this).toggleClass('active', link == currentPath);
                 });
+
+                // Select inputs
+                $('select').material_select();
+
+                // Search button
+                $('#open-search').on('click', function () {
+                    $('nav').addClass('finding');
+                    $('#search').focus();
+                });
+                $('#close-search').on('click', function () {
+                    if (isSearch) {
+                        window.location.href = "{{ path('homepage') }}";
+                    } else {
+                        $('nav').removeClass('finding');
+                    }
+                });
+                $("#search").bind("keypress", {}, keypressInBox);
+                function keypressInBox(e) {
+                    var code = (e.keyCode ? e.keyCode : e.which);
+                    if (code == 13) { //Enter keycode
+                        e.preventDefault();
+                        var url = "{{ path('feed_search', {'term' : 'TERM_HERE'}) }}";
+                        url = url.split('TERM_HERE').join($("#search").val());
+                        window.location.href = url;
+                    }
+                };
             });
         </script>
+        {% block javascript %}{% endblock %}
 
     </body>
 </html>
