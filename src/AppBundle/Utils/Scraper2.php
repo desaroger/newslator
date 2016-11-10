@@ -133,83 +133,61 @@ class Scraper2
         $rawFeed = ['title' => '', 'body' => '', 'image' => '', 'source' => ''];
         $crawler = new Crawler($html);
 
-        // Scraper
+        // Helper to short things.
+        $craw = function ($a, $b, $c = false, $d = false) {
+            return $this->safeTextCrawler($a, $b, $c, $d);
+        };
+
+        // Scraper itself
         if ($publisher == 'elpais') {
-            $article = $crawler->filter('body article.articulo--primero')->first();
-            $rawFeed['title'] = $article->filter('.articulo__interior > [itemprop="headline"] > a')->first()->text();
-            $rawFeed['body'] = $article->filter('.articulo__interior > [itemprop="description"]')->first()->text();
-            $possibleImages = $article->filter('.articulo__interior > figure[itemprop="image"] a img');
-            if (count($possibleImages)) {
-                $rawFeed['image'] = $possibleImages->first()->attr('data-src');
-            }
-            $rawFeed['source'] = $article->filter('.articulo__interior > [itemprop="headline"] a')->first()->attr('href');
-            $rawFeed['source'] = $this->absolutizeUrl($rawFeed['source'], 'http://elpais.com');
-
-
+            $article            = $crawler->filter('body article.articulo--primero')->first();
+            $rawFeed['title']   = $craw($article->filter('.articulo__interior > [itemprop="headline"] > a'),  'text');
+            $rawFeed['body']    = $craw($article->filter('.articulo__interior > [itemprop="description"]'),   'text');
+            $rawFeed['image']   = $craw($article->filter('.articulo__interior > [itemprop="image"] a img'),   'attr', 'data-src');
+            $rawFeed['source']  = $craw($article->filter('.articulo__interior > [itemprop="headline"] a'),    'attr', 'href', 'http://elpais.com');
         } else if ($publisher == 'elmundo') {
-            $article = $crawler->filter('body .flex-a .content-item:first-child')->first();
-            $rawFeed['title'] = $article->filter('article > header a')->first()->text();
-            $possibleBodies = $article->filter('article > p.entradilla');
-            if (count($possibleBodies)) {
-                $rawFeed['body'] = $possibleBodies->first()->text();
-            }
-            $rawFeed['image'] = 'http:' . $article->filter('article > figure[itemprop="image"] img')->first()->attr('src');
-            $rawFeed['source'] = $article->filter('article > header a')->first()->attr('href');
-
-
+            $article            = $crawler->filter('body .flex-a .content-item:first-child')->first();
+            $rawFeed['title']   = $craw($article->filter('article > header a'),     'text');
+            $rawFeed['body']    = $craw($article->filter('article > p.entradilla'), 'text');
+            $rawFeed['image']   = $craw($article->filter('article > figure[itemprop="image"] img'), 'attr', 'src', true);
+            $rawFeed['source']  = $craw($article->filter('article > header a'),     'attr', 'href');
         } else if ($publisher == 'elconfidencial') {
-            $area = $crawler->filter('body .content-areas > .area')->first();
-            $section = $area->filter('.opening-container > div > section')->first();
-            $article = $section->filter('.group')->first();
-            $titleLink = $article->filter('article .art-tit a')->first();
-            $rawFeed['title'] = $titleLink->text();
-            $rawFeed['source'] = $titleLink->attr('href');
-            $possibleBodies = $article->filter('article > .leadin');
-            if (count($possibleBodies)) {
-                $rawFeed['body'] = $possibleBodies->first()->text();
-            }
-            $rawFeed['image'] = $article->filter('article > figure.art-fig img')->first()->attr('src');
+            $area               = $crawler->filter('body .content-areas > .area')->first();
+            $section            = $area->filter('.opening-container > div > section')->first();
+            $article            = $section->filter('.group')->first();
+            $titleLink          = $article->filter('article .art-tit a');
+            $rawFeed['title']   = $craw($titleLink, 'text');
+            $rawFeed['source']  = $craw($titleLink, 'attr', 'href');
+            $rawFeed['body']    = $craw($article->filter('article > .leadin'), 'text');
+            $rawFeed['image']   = $craw($article->filter('article > figure.art-fig img'), 'attr', 'src');
 
         } else if ($publisher == 'larazon') {
-            $biggerFirstTitle = $crawler->filter('body .headline.xlarge')->first();
-            $article = $biggerFirstTitle->parents()->first()->parents()->first();
-
-//            $article = $crawler->filter('body .teaser-agrupador-apertura')->first();
-            $titleLink = $article->filter('.teaserPrincipal > .headline a');
-
-            $rawFeed['title'] = $titleLink->text();
-            $rawFeed['source'] = $titleLink->attr('href');
-            $rawFeed['source'] = $this->absolutizeUrl($rawFeed['source'], 'http://www.larazon.es');
-            $possibleImages = $article->filter('.teaserPrincipal > .media img');
-            if (count($possibleImages)) {
-                $rawFeed['image'] = $possibleImages->first()->attr('src');
-                $rawFeed['image'] = $this->absolutizeUrl($rawFeed['image'], 'http://www.larazon.es');
-            }
-            $rawFeed['body'] = $article->filter('.teaserPrincipal > .teaser p:first-child')->first()->text();
+            $biggerFirstTitle   = $crawler->filter('body .headline.xlarge')->first();
+            $article            = $biggerFirstTitle->parents()->first()->parents()->first();
+            $titleLink          = $article->filter('.teaserPrincipal > .headline a');
+            $rawFeed['title']   = $craw($titleLink, 'text');
+            $rawFeed['source']  = $craw($titleLink, 'attr', 'href', 'http://www.larazon.es');
+            $rawFeed['image']   = $craw($article->filter('.teaserPrincipal > .media img'), 'attr', 'src', 'http://www.larazon.es');
+            $rawFeed['body']    = $craw($article->filter('.teaserPrincipal > .teaser p:first-child'), 'text');
 
         } else if ($publisher == 'elperiodico') {
             $article = $crawler->filter('body .ep-noticia.tam-1')->first();
             if (count($article) == 0) {
                 $article = $crawler->filter('body .ep-noticia.tam-2')->first();
             }
-            $titleLink = $article->filter('h2 a');
-            $rawFeed['title'] = $titleLink->text();
-            $rawFeed['source'] = $titleLink->attr('href');
-            $rawFeed['source'] = $this->absolutizeUrl($rawFeed['source'], 'http://www.elperiodico.com/');
-            $possibleBodies = $article->filter('.subtitulo');
-            if (count($possibleBodies)) {
-                $rawFeed['body'] = $possibleBodies->first()->text();
-            }
-            $rawFeed['image'] = $article->filter('.thumb img')->first()->attr('src');
+            $titleLink          = $article->filter('h2 a');
+            $rawFeed['title']   = $craw($titleLink, 'text');
+            $rawFeed['source']  = $craw($titleLink, 'attr', 'href', 'http://www.elperiodico.com/');
+            $rawFeed['body']    = $craw($article->filter('.subtitulo'), 'text');
+            $rawFeed['image']   = $craw($article->filter('.thumb img'), 'attr', 'src');
         }
 
-        // Preparations
+        /* Preparations */
 
-        // Trim
-        $rawFeed['title'] = trim((string) $rawFeed['title']);
-        $rawFeed['body'] = trim((string) $rawFeed['body']);
-        $rawFeed['source'] = trim((string) $rawFeed['source']);
-        $rawFeed['image'] = trim((string) $rawFeed['image']);
+        // Trim everything
+        $rawFeed = array_map(function($item) {
+            return trim((string) $item);
+        }, $rawFeed);
 
         // Html
         foreach(['title', 'body'] as $prop) {
@@ -222,19 +200,21 @@ class Scraper2
 
         // Url
         foreach(['source', 'image'] as $prop) {
-            if ($rawFeed['image'] == '') {
+            if ($rawFeed[$prop] == '')
                 continue;
-            }
             $base = $this->publishers[$publisher]['url'];
             $rawFeed[$prop] = $this->absolutizeUrl($rawFeed[$prop], $base);
         }
 
-        // Extra
+        /* Extra */
+
+        // For transparentPixel, 1x1 pixel
         if (strpos($rawFeed['image'], 'transparent') > 0) {
             $rawFeed['image'] = '';
         }
 
-        // Create Feed
+        /* Create Feed */
+
         $feed = new Feed();
         $feed->setTitle($rawFeed['title']);
         $feed->setBody($rawFeed['body']);
@@ -314,6 +294,34 @@ class Scraper2
         $feed->_createdNow = $isCreation;
 
         return $feed;
+    }
+
+    /**
+     * Little method to help us shorting the crawler method. I always get the "Empty node list" before, so ended
+     * up with so many Ifs and try/catchs. This functions aims to replace them.
+     *
+     * @param $crawler - The Symfony Dom crawler object
+     * @param $method - The method to be executed if there is some node
+     * @param $argument - The argument to pass to that function
+     * @param $baseAbsolutizeUrl - If passed, the base with which the result will be absolutized
+     * @return string - The result string. Empty string if there wasn't a node.
+     */
+    private function safeTextCrawler($crawler, $method, $argument = false, $baseAbsolutizeUrl = false)
+    {
+        if (count($crawler) == 0) {
+            return '';
+        }
+        $elem = $crawler->first();
+
+        // Run the method
+        $result = $argument ? $elem->$method($argument) : $elem->$method();
+
+        // Absolutize if needed
+        if ($baseAbsolutizeUrl) {
+            $result = $this->absolutizeUrl($result, $baseAbsolutizeUrl);
+        }
+
+        return $result;
     }
 
     /**
