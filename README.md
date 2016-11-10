@@ -157,7 +157,8 @@ Can be mainly found on `tests/Utils/Scraper2Test`.
 
 # Develop times
 
-Expected: 30 hours
+Expected: 30 hours.
+
 Reality: 20 hours.
 
 
