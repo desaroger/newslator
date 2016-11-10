@@ -59,7 +59,7 @@
         </tbody>
     </table>
 
-    {% if knp_pagination_render is defined %}
+    {% if not search | default(false) %}
         {{ knp_pagination_render(feeds) }}
     {% endif %}
 
