@@ -3,6 +3,8 @@
 
 Newslator is a newspaper cover aggregator made with Symfony 3. This is my first project with Symfony, and it only has learning purposes and to check my skills.
 
+![alt tag](https://raw.githubusercontent.com/desaroger/newslator/master/Cover.png)
+
 # Installation
 
 First of all you will need php and composer. I'm using v7, but will work with v5.4 or superior:
