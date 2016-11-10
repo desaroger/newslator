@@ -44,13 +44,8 @@
 
     {# Buttons right (delete, edit) #}
     <div class="right">
-        {{ form_start(delete_form) }}
-            <a class="waves-effect waves-teal btn-flat" href="#delete_modal">
-                {#<input type="submit" value="" class="hide-hack" style="margin-left: -2em;">#}
-                delete
-            </a>
-            <a href="{{ path('feed_edit', { 'id': feed.id }) }}" class="waves-effect waves-teal btn">Edit</a>
-        {{ form_end(delete_form) }}
+        <a class="waves-effect waves-teal btn-flat" href="#delete_modal">Delete</a>
+        <a href="{{ path('feed_edit', { 'id': feed.id }) }}" class="waves-effect waves-teal btn">Edit</a>
     </div>
 
 
