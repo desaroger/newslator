@@ -1,0 +1,17 @@
+<div class="card medium">
+    <div class="card-image {{ image | default(0) ? '' : 'no-image' }}">
+        {% if image | default(0) %}
+            <img class="activator" src="{{ image }}">
+        {% endif %}
+    </div>
+    <div class="card-content">
+        <span class="card-title activator grey-text text-darken-4">{{ title | default('untitled') }}</span>
+    </div>
+    <div class="card-action">
+    <a href="{{ source }}" target="_blank">Read [{{ publisher | publisherName }}]</a>
+    </div>
+    <div class="card-reveal">
+        <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
+        <p>{{ body | raw }}</p>
+    </div>
+</div>
