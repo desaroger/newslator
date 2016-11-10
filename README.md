@@ -153,3 +153,23 @@ $ phpunit --covarage-html covarage
 ```
 
 Can be mainly found on `tests/Utils/Scraper2Test`.
+
+
+# Develop times
+
+Expected: 30 hours
+Reality: 20 hours approx.
+
+Note: The work isn't done yet, this times are provisional
+
+
+| Task                                          | Expected | Reality | Observations                                                  |
+|-----------------------------------------------|----------|---------|---------------------------------------------------------------|
+| Install everything and create Symfony Project | 1:00     | 1:00    |                                                               |
+| Prepare database server                       | 1:00     | 0:15    | Everything went smoothly.                                     |
+| Feed doctrine model (including CRUD)          | 4:00     | 1:30    | I spent some time with the search system.                     |
+| Scraping service                              | 5:00     | 5:30    | Finally went from rss to web scraping, I made the work twice. |
+| Homepage                                      | 3:00     | 2:00    |                                                               |
+| Frontend tasks (html, css...)                 | 4:00     | 4:00    |                                                               |
+| Console command                               | 3:00     | 2:15    |                                                               |
+| Tests                                         | 9:00     | 2:00    | I did TDD so I take that time inside scraping service mainly. |
